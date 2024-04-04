@@ -30,10 +30,8 @@ pipeline {
       }
     }
     stage('Deploying Python container to Kubernetes') {
-      steps {
-        script {
-          sh 'kubectl apply -f deployment.yaml -f service.yaml'
-        }
+      withKubeConfig([credentialsId: 'my_kubernetes', serverUrl: 'https://127.0.0.1:32769']) {
+        sh 'kubectl apply -f deployment.yaml service.yaml'
       }
     }
   }
